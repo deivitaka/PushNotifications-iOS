@@ -43,27 +43,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let tokenChars = UnsafePointer<CChar>((deviceToken as NSData).bytes)
-        var tokenString = ""
+        let chars = UnsafePointer<CChar>((deviceToken as NSData).bytes)
+        var token = ""
         
         for i in 0..<deviceToken.count {
-            tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
+            token += String(format: "%02.2hhx", arguments: [chars[i]])
         }
         
-        print("Device Token:", tokenString)
+        print("Registration succeeded!")
+        print("Token: ", token)
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        print("Failed to register:", error)
+        print("Registration failed!")
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         notificationReceived(notification: userInfo)
     }
     
-    func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [NSObject : AnyObject], completionHandler: () -> Void) {
-        notificationReceived(notification: userInfo)
-    }
+//    func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [NSObject : AnyObject], completionHandler: () -> Void) {
+//        notificationReceived(notification: userInfo)
+//    }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         application.applicationIconBadgeNumber = 0; // Clear badge when app is or resumed
